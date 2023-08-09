@@ -1,0 +1,39 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: optimism-goerli
+    source:
+      address: "0xad8BC443766AaA8ffB214fD2F8E1Dc5Cac7F6B0D"
+      abi: Contract
+      startBlock: 13040334
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ApprovalForAll
+        - SchemaRegistered
+        - TransferBatch
+        - TransferSingle
+        - URI
+        - schemaSubscription
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: SchemaRegistered(string,string,string[],bytes32,address,uint256,string,uint256,uint256,bool)
+          handler: handleSchemaRegistered
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+        - event: schemaSubscription(address,bytes32,uint256)
+          handler: handleschemaSubscription
+      file: ./src/contract.ts
